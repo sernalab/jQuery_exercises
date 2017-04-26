@@ -38,7 +38,6 @@
         </fieldset>
       </form>
 
-
       <form id="f2" action="#" class="form-group">
         <fieldset class="row">
 					<div class="col-md-6">
@@ -50,6 +49,7 @@
           	<input id="f2-result" type="text" size="7" readonly="readonly">
           	<span>%</span>
 					</div>
+
         </fieldset>
       </form>
 
@@ -72,7 +72,50 @@
 
 </div>
 
-	<script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
+<script type="text/javascript">
+//starting removing error classes and hidden p message
+$( document ).ready(function() {
+	$('p[id=helpBlock1]').hide();
+	$('form').removeClass('has-error');
+});
+	// operations
+	$('#f1-calculate').on('click', function() {
+    	var a = $('#f1-a').val();
+    	var b = $('#f1-b').val();
+    	$a = +a;
+    	$b = +b;
+    	if (isNaN(a) || isNaN(b)){//check if is a number before the operations always
+	    	console.log('is not a number');
+	    	$('form').addClass('has-error');
+	    	$('p[id=helpBlock1]').show();
+    	}else{
+    		console.log('is a nmber')
+    		var result = a / 100 * b;
+	    	result = parseInt(result);
+    		$('#f1-result').val(result);
+    	}				
+    	
+    	
+	})
+	$('#f2-calculate').on('click', function() {
+		var a = $('#f2-a').val();
+		var b = $('#f2-b').val();
+		var result = a / b * 100;
+		result = parseInt(result);
+		$('#f2-result').val(result);
+	})
+	$('#f3-calculate').on('click', function() {
+		var a = $('#f3-a').val();
+		var b = $('#f3-b').val();
+		var result = (b - a) / a * 100;
+		result = parseInt(result);
+		$('#f3-result').val(result);
+	})
+
+
+
+</script>
 
 </body>
 </html>
