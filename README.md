@@ -4,6 +4,8 @@
 
 ### jQuery
 
+[Learning with each](http://learn.jquery.com/using-jquery-core/iterating/)
+
 __An example of Jquery__
 
 ```html
@@ -45,12 +47,16 @@ __An example of Jquery__
 ------
 
 
-
-
 ## DAY TWO
+
+__Events__
+
+[notes](https://github.com/juanmaguitar/javascript-notes/tree/master/markdown-en/12-events#events-delegation)
 
 ------
 ## DAY THREE
+
+
 
 
 ------
