@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <style type="text/css">
+      .jumbotron { padding-top: 10px; }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+      <div class="header clearfix">
+        <!-- <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation" class="active"><a href="#">Home</a></li>
+            <li role="presentation"><a href="#">About</a></li>
+            <li role="presentation"><a href="#">Contact</a></li>
+          </ul>
+        </nav> -->
+        <h3 class="text-muted">SpotiFinder 😎</h3>
+      </div>
+
+      <div class="jumbotron">
+        <h1>Search</h1>
+         <form action="" method="POST" class="form-inline" role="form">
+            <div class="form-group">
+                <label class="sr-only" for="">label</label>
+                <input type="text" class="form-control" id="artist-name" placeholder="Enter an artist name...">
+            </div>
+            <button id="search-artist" type="submit" class="btn btn-primary">Search this artist</button>
+        </form>
+      </div>
+
+       <div class="jumbotron">
+        <h1>Artists</h1>
+        <select id="artists-selection" class="input-lg"></select>
+      </div>
+
+
+
+
+    </div> <!-- /container -->
+
+
+
+    <script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript">
+
+      $('#search-artist').on('click', function(e) {
+        e.preventDefault()
+        var nameArtist = $('#artist-name').val()
+        var urlSearchArtist = 'https://api.spotify.com/v1/search?type=artist&query=' + nameArtist
+        $.ajax({
+          url: urlSearchArtist,
+          success: function(data) {
+            var artistsFound = data.artists.items
+            var optionsArtists = ''
+            artistsFound.forEach(function( artistData ) {
+              optionsArtists += '<option>' + artistData.name + '</option>'
+            })
+            $('#artists-selection').html(optionsArtists)
+          }
+        })
+      })
+
+    </script>
+</body>
+
+</html>

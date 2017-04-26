@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Spotify API</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div>
+                  <form method="POST" class="form-inline" role="form">
+                    <div class="form-group">
+                      <label class="sr-only" for="">label</label>
+                      <input type="text" class="form-control" id="artist-name" placeholder="Enter the artist">
+                    </div>
+                    <button id="search-artist" type="submit" class="btn btn-primary">Search artist</button>
+                  </form>
+
+                </div>
+             <!--    <div class="card hovercard">
+                    <div class="avatar">
+                        <img id="avatar_user" alt="" src="http://lorempixel.com/100/100/people/9/">
+                    </div>
+                    <div class="info">
+                        <div class="title">
+                            <a id="name_owner" target="_blank" href="#">User Name</a>
+                        </div>
+                        <ul id="list_repos" class="list-unstyled"></ul>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript">
+
+        $('#search-artist').on('click', function(e) {
+            e.preventDefault();
+            var nameArtist = $('#artist-name').val()
+            var urlSearchArtist = 'https://api.spotify.com/v1/search?type=artist&query=' + nameArtist
+            $.ajax({
+                url: urlSearchArtist,
+                success: function(data) {
+                  var artistFound = data
+                  console.log(data.artist.items)
+                }
+            })
+            // $.ajax({
+            //     url: 'https://api.spotify.com/v1/search?type=artist&query=' + artist,
+            //     success: function(userData) {
+            //       console.log(userData)
+            //         $('#avatar_user').attr('src', userData.avatar_url)
+            //         $('#name_owner')
+            //             .text(userData.name)
+            //             .attr('href', userData.html_url )
+            //     }
+            // })
+        })
+
+
+    </script>
+</body>
+
+</html>
