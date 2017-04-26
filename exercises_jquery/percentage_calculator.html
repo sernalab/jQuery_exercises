@@ -38,7 +38,7 @@
         </fieldset>
       </form>
 
-      <form id="f2" action="#" class="form-group">
+      <form id="f2" action="#" class="form-group has-error">
         <fieldset class="row">
 					<div class="col-md-6">
 						<p><input id="f2-a" type="text" size="5"> is what percent of <input id="f2-b" type="text" size="5">?</p>
@@ -53,7 +53,7 @@
         </fieldset>
       </form>
 
-      <form id="f3" action="#" class="form-group">
+      <form id="f3" action="#" class="form-group has-error">
         <fieldset class="row">
 					<div class="col-md-6">
 						<p>What is the percentage increase/decrease<br>from <input id="f3-a" type="text" size="6"> to <input id="f3-b" type="text" size="6">?</p>
@@ -78,6 +78,7 @@
 $( document ).ready(function() {
 	$('p[id=helpBlock1]').hide();
 	$('form').removeClass('has-error');
+
 });
 	// operations
 	$('#f1-calculate').on('click', function() {
@@ -95,9 +96,8 @@ $( document ).ready(function() {
 	    	result = parseInt(result);
     		$('#f1-result').val(result);
     	}				
-    	
-    	
-	})
+	});
+
 	$('#f2-calculate').on('click', function() {
 		var a = $('#f2-a').val();
 		var b = $('#f2-b').val();
