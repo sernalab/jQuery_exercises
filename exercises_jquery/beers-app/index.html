@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Beers App 🍻</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <h1 class="text-center">Search your Beer 🍻</h1>
+        </div>
+        <form action="" method="POST" class="form-inline" role="form">
+            <div class="form-group">
+                <label class="sr-only" for="">label</label>
+                <input type="text" class="form-control" id="beer-name" placeholder="Enter beer">
+                <button id="search-beer" type="submit" class="btn">Lets Drink!</button>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default coupon">
+                    <div class="panel-heading" id="head">
+                        <div class="panel-title" id="title">
+                            <h3>Beers</h3>
+                            <select id="beers-selection" class="input-lg"></select>
+                            <span id="name-beer-title"></span>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <img src="http://i.imgur.com/e07tg8R.png" id="img-beer" class="coupon-img img-rounded">
+                        <div class="col-md-9">
+                            <ul class="items">
+                                <li>Add up to 5 quarts of motor oil (per specification)</li>
+                                <li>Complimentary multi-point inspection</li>
+                                <li>Drain and refill trnasmission fluid</li>
+                                <li>System inspection</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="description"></p>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="coupon-code">
+                            <p>ID: <span id="id-showed"></span></p>
+                        </div>
+                        <div class="exp">Expires: Sep 30, 2016</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /container -->
+        <!-- /scripts -->
+        <script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
+        <script src="js/app.js"></script>
+</body>
+
+</html>

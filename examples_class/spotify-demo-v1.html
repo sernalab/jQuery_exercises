@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <style type="text/css">
+      i { margin-right: 10px; }
+      .jumbotron {
+        padding-top: 10px;
+        padding-bottom: 40px;
+      }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="col-md-6 col-md-offset-3">
+            <!-- Search Form -->
+            <form role="form">
+                <!-- Search Field -->
+                    <h1 class="text-center">Search Title</h1>
+                    <div class="form-group">
+                        <div class="input-group" id="search-artist-container">
+                            <input value="the beatles" class="form-control" type="text" name="search" placeholder="Search" required/>
+                            <span class="input-group-btn">
+                            <button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-search" aria-hidden="true"></i><span>Search</span></button>
+                            </span>
+                            </span>
+                        </div>
+                    </div>
+            </form>
+            <!-- End of Search Form -->
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+          <div class="jumbotron">
+              <h1>Artists</h1>
+              <select id="artists-selection" ></select>
+          </div>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+          <div class="jumbotron">
+              <h1>Albums</h1>
+              <select id="albums-selection" ></select>
+          </div>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+          <div class="jumbotron">
+              <h1>Songs</h1>
+              <ul id="songs-list"></ul>
+          </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript">
+
+      // https://api.spotify.com/v1/artists/<ID-ARTIST>/albums
+      // https://api.spotify.com/v1/albums/<ID-ALBUM>/tracks
+
+      $('#search-artist-container button').on('click', function(e) {
+        e.preventDefault();
+        var artistName = $('#search-artist-container input').val()
+        var urlSearchArtist = 'https://api.spotify.com/v1/search?type=artist&query=' + artistName
+        $.ajax({
+          url: urlSearchArtist,
+          success: function( data ) {
+            var aArtistsFound = data.artists.items
+            var optionTpl = '<option value="<%ARTIST_ID%>"><%ARTIST_NAME%></option>'
+            var optionsHtml = ''
+            aArtistsFound.forEach( function( oDataArtist ) {
+              var currentOption = optionTpl
+                              .replace('<%ARTIST_NAME%>', oDataArtist.name)
+                              .replace('<%ARTIST_ID%>', oDataArtist.id)
+              optionsHtml += currentOption
+            })
+            $('#artists-selection').html(optionsHtml)
+          }
+        })
+      })
+
+      $('#artists-selection').on('change', function() {
+        var idArtist = $(this).val()
+        var urlApiAlbums = 'https://api.spotify.com/v1/artists/' + idArtist + '/albums'
+        $.ajax({
+          url: urlApiAlbums,
+          success: function(data) {
+            var albumsFound = data.items
+            var optionTpl = '<option value="<%ALBUM_ID%>"><%ALBUM_NAME%></option>'
+            var optionsHtml = ''
+            albumsFound.forEach( function( oDataAlbum ) {
+              var currentOption = optionTpl
+                                    .replace('<%ALBUM_NAME%>', oDataAlbum.name)
+                                    .replace('<%ALBUM_ID%>', oDataAlbum.id)
+              optionsHtml += currentOption
+            })
+            $('#albums-selection').html(optionsHtml)
+          }
+        })
+      })
+
+      $('#albums-selection').on('change', function() {
+        var idAlbum =  $(this).val()
+        var urlApiSongs = 'https://api.spotify.com/v1/albums/' + idAlbum + '/tracks'
+        $.ajax({
+          url: urlApiSongs,
+          success: function( data ) {
+             var songsFound = data.items
+             var liTpl = '<li><a target="_blank" href="<%SONG_URL%>"><%SONG_NAME%></a></li>'
+             var lisHtml = ''
+             songsFound.forEach( function( oDataSong ) {
+                var currentLi = liTpl
+                                    .replace('<%SONG_URL%>', oDataSong.preview_url)
+                                    .replace('<%SONG_NAME%>', oDataSong.name)
+                lisHtml += currentLi
+             })
+             $('#songs-list').html(lisHtml)
+
+          }
+        })
+      })
+
+    </script>
+</body>
+
+</html>

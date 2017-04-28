@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <style type="text/css">
+      i { margin-right: 10px; }
+      .jumbotron {
+        padding-top: 10px;
+        padding-bottom: 40px;
+      }
+      .hidden {
+        display:none;
+      }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="col-md-6 col-md-offset-3">
+            <!-- Search Form -->
+            <form role="form">
+                <!-- Search Field -->
+                    <h1 class="text-center">Search Title</h1>
+                    <div class="form-group">
+                        <div class="input-group" id="search-artist-container">
+                            <input value="the beatles" class="form-control" type="text" name="search" placeholder="Search" required/>
+                            <span class="input-group-btn">
+                            <button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-search" aria-hidden="true"></i><span>Search</span></button>
+                            </span>
+                            </span>
+                        </div>
+                    </div>
+            </form>
+            <!-- End of Search Form -->
+        </div>
+        <div id="artists-container" class="col-md-6 col-md-offset-3 hidden">
+          <div class="jumbotron">
+              <h1>Artists</h1>
+              <select id="artists-selection" ></select>
+          </div>
+        </div>
+        <div id="albums-container"  class="col-md-6 col-md-offset-3 hidden">
+          <div class="jumbotron">
+              <h1>Albums</h1>
+              <select id="albums-selection" ></select>
+          </div>
+        </div>
+        <div id="songs-container" class="col-md-6 col-md-offset-3 hidden">
+          <div class="jumbotron">
+              <h1>Songs</h1>
+              <img class="img-responsive img-thumbnail" id="cover-album" src="">
+              <ul id="songs-list"></ul>
+          </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript">
+
+      // https://api.spotify.com/v1/artists/<ID-ARTIST>/albums
+      // https://api.spotify.com/v1/albums/<ID-ALBUM>/tracks
+
+      $('#search-artist-container button').on('click', function(e) {
+        e.preventDefault();
+        var artistName = $('#search-artist-container input').val()
+        var urlSearchArtist = 'https://api.spotify.com/v1/search?type=artist&query=' + artistName
+        $.ajax({
+          url: urlSearchArtist,
+          success: function( data ) {
+            var aArtistsFound = data.artists.items
+            var optionTpl = '<option value="<%ARTIST_ID%>"><%ARTIST_NAME%></option>'
+            var optionsHtml = '<option disabled selected>Select an artist</option>'
+            aArtistsFound.forEach( function( oDataArtist ) {
+              var currentOption = optionTpl
+                              .replace('<%ARTIST_NAME%>', oDataArtist.name)
+                              .replace('<%ARTIST_ID%>', oDataArtist.id)
+              optionsHtml += currentOption
+            })
+            $('#artists-selection').html(optionsHtml)
+            $('#artists-container').removeClass('hidden')
+            $('#albums-container').addClass('hidden')
+            $('#songs-container').addClass('hidden')
+          }
+        })
+      })
+
+      $('#artists-selection').on('change', function() {
+        var idArtist = $(this).val()
+        var urlApiAlbums = 'https://api.spotify.com/v1/artists/' + idArtist + '/albums'
+        $.ajax({
+          url: urlApiAlbums,
+          success: function(data) {
+            var albumsFound = data.items
+            var optionTpl = '<option data-cover-img="<%ALBUM_COVER_IMG%>" value="<%ALBUM_ID%>"><%ALBUM_NAME%></option>'
+            var optionsHtml = '<option disabled selected>Select an album</option>'
+            albumsFound.forEach( function( oDataAlbum ) {
+              console.log(oDataAlbum)
+              var currentOption = optionTpl
+                                    .replace('<%ALBUM_NAME%>', oDataAlbum.name)
+                                    .replace('<%ALBUM_ID%>', oDataAlbum.id)
+                                    .replace('<%ALBUM_COVER_IMG%>', oDataAlbum.images[1].url)
+              optionsHtml += currentOption
+            })
+            $('#albums-selection').html(optionsHtml)
+            $('#albums-container').removeClass('hidden')
+            $('#songs-container').addClass('hidden')
+          }
+        })
+      })
+
+      $('#albums-selection').on('change', function() {
+        var idAlbum =  $(this).val()
+        var coverAlbum = $(this).find('option:selected').data('cover-img')
+        $('#cover-album').attr('src',coverAlbum)
+        var urlApiSongs = 'https://api.spotify.com/v1/albums/' + idAlbum + '/tracks'
+        $.ajax({
+          url: urlApiSongs,
+          success: function( data ) {
+             var songsFound = data.items
+             var liTpl = '<li><a target="_blank" href="<%SONG_URL%>"><%SONG_NAME%></a></li>'
+             var lisHtml = ''
+             songsFound.forEach( function( oDataSong ) {
+                var currentLi = liTpl
+                                    .replace('<%SONG_URL%>', oDataSong.preview_url)
+                                    .replace('<%SONG_NAME%>', oDataSong.name)
+                lisHtml += currentLi
+             })
+             $('#songs-list').html(lisHtml)
+             $('#songs-container').removeClass('hidden')
+
+          }
+        })
+      })
+
+    </script>
+</body>
+
+</html>
